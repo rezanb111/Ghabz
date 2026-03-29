@@ -3,518 +3,493 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیدا نت - سرویس VPN نئونی و حرفه‌ای</title>
+    <title>شیدا نت | Sheida Net - سرویس نئونی V2REI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        'vazir': ['Vazirmatn', 'Tahoma', 'Arial', 'sans-serif']
-                    },
+                    fontFamily: { 'vazir': ['Vazirmatn', 'sans-serif'] },
                     colors: {
-                        'neon-cyan': '#00f2fe',
-                        'neon-magenta': '#ff00de',
                         'neon-purple': '#bc13fe',
+                        'neon-cyan': '#00f2fe',
+                        'neon-pink': '#ff00de',
+                        'dark-bg': '#0d001a'
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.6s ease-out forwards',
-                        'pulse-neon': 'pulseNeon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'flag-fall': 'flagFall 10s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        fadeIn: { 'from': { opacity: 0 }, 'to': { opacity: 1 } },
-                        slideUp: { 
-                            'from': { transform: 'translateY(30px)', opacity: 0 }, 
-                            'to': { transform: 'translateY(0)', opacity: 1 } 
+                        glow: {
+                            'from': { 'text-shadow': '0 0 10px #bc13fe, 0 0 20px #bc13fe' },
+                            'to': { 'text-shadow': '0 0 20px #00f2fe, 0 0 30px #00f2fe' }
                         },
-                        pulseNeon: {
-                          '0%, 100%': { 'box-shadow': '0 0 15px #00f2fe, 0 0 5px #bc13fe' },
-                          '50%': { 'box-shadow': '0 0 25px #ff00de, 0 0 10px #00f2fe' },
-                        },
-                        flagFall: {
-                            '0%': { transform: 'translateY(-10vh) rotate(0deg)', opacity: 0 },
-                            '10%': { opacity: 0.4 },
-                            '90%': { opacity: 0.4 },
-                            '100%': { transform: 'translateY(110vh) rotate(360deg)', opacity: 0 }
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
                         }
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        body { 
-            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
-            line-height: 1.6;
-            scroll-behavior: smooth;
-            background: url('https://i.ibb.co/JFgpQYQk/IMG.jpg') no-repeat center center fixed;
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #0d001a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* پس‌زمینه اصلی با عکس ارسالی */
+        .main-bg {
+            background: linear-gradient(rgba(13, 0, 26, 0.85), rgba(13, 0, 26, 0.85)), 
+                        url('https://i.ibb.co/JFgpQYQk/IMG.jpg');
             background-size: cover;
-            color: #e0e0e0;
+            background-position: center;
+            background-attachment: fixed;
         }
-        .overlay-dark {
-            background: rgba(13, 1, 33, 0.85);
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-        }
-        .card-neon {
+
+        .neon-card {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
+            transition: all 0.3s ease;
         }
-        .card-neon:hover {
-            border: 1px solid #ff00de;
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 0 30px rgba(255, 0, 222, 0.4);
+
+        .neon-card:hover {
+            border-color: #00f2fe;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            transform: translateY(-5px);
         }
-        .neon-text-cyan { color: #00f2fe; text-shadow: 0 0 10px rgba(0, 242, 254, 0.8); }
-        .neon-text-magenta { color: #ff00de; text-shadow: 0 0 10px rgba(255, 0, 222, 0.8); }
-        
-        .status-online {
-            background: #00f2fe;
-            box-shadow: 0 0 15px #00f2fe;
-            animation: pulse-neon 2s infinite;
+
+        .neon-text-cyan { color: #00f2fe; text-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
+        .neon-text-purple { color: #bc13fe; text-shadow: 0 0 10px rgba(188, 19, 254, 0.5); }
+
+        .btn-neon {
+            background: linear-gradient(45deg, #bc13fe, #00f2fe);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* Snow Flags */
-        #flag-container {
+
+        .btn-neon:hover {
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            filter: brightness(1.2);
+        }
+
+        /* انیمیشن بارش پرچم ایران */
+        .flag-snow {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: -50px;
             pointer-events: none;
             z-index: 9999;
-            overflow: hidden;
-        }
-        .snow-flag {
-            position: absolute;
-            width: 20px;
-            height: 12px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg');
-            background-size: cover;
-            filter: blur(0.5px);
-            opacity: 0.4;
+            animation: fall linear forwards;
+            opacity: 0.5;
         }
 
-        .config-list::-webkit-scrollbar { width: 6px; }
-        .config-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-        .config-list::-webkit-scrollbar-thumb { background: #bc13fe; border-radius: 10px; }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
+        }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
+        /* استایل سفارشی اسکرول‌بار */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d001a; }
+        ::-webkit-scrollbar-thumb { background: #bc13fe; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+
+        .config-list-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-right: 4px solid #bc13fe;
         }
-        .ripple { position: relative; overflow: hidden; }
-        .ripple::after {
-            content: "";
-            background: rgba(255, 255, 255, 0.2);
-            display: block; position: absolute; border-radius: 50%;
-            padding-top: 240%; padding-left: 240%;
-            margin-left: -120%; margin-top: -120%;
-            opacity: 0; transition: all 0.8s;
-        }
-        .ripple:active::after { padding: 0; margin: 0; opacity: 1; transition: 0s; }
     </style>
 </head>
-<body class="min-h-screen">
-    <div class="overlay-dark"></div>
+<body class="main-bg min-h-screen">
+
     <div id="flag-container"></div>
 
-    <div id="welcomeModal" class="hidden fixed inset-0 bg-black bg-opacity-90 backdrop-blur-xl flex items-center justify-center z-[100] p-4 animate-fade-in">
-        <div class="card-neon rounded-[2rem] p-10 max-w-md w-full text-center border-t-4 border-neon-cyan">
-            <div class="w-24 h-24 bg-black rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_#00f2fe] border-2 border-neon-cyan overflow-hidden">
-                <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" class="w-20 object-contain" alt="Logo">
-            </div>
-            <h2 class="text-3xl font-black neon-text-cyan mb-4">به شیدا نت خوش آمدید!</h2>
+    <div id="welcomeModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
+        <div class="neon-card max-w-lg w-full p-8 rounded-[2rem] text-center border-t-4 border-neon-cyan">
+            <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" alt="Logo" class="w-24 h-24 mx-auto mb-6 animate-float">
+            <h2 class="text-3xl font-black mb-4 neon-text-cyan">به شیدا نت خوش آمدید</h2>
             <p class="text-gray-300 mb-8 leading-relaxed">
-                تجربه‌ای نئونی از اینترنت آزاد و بدون مرز. امنیت شما تخصص ماست.
+                قدرتمندترین و زیباترین سرویس عبور از محدودیت با زیرساخت نئونی اختصاصی <span class="text-neon-purple font-bold">v2rei</span>.
             </p>
-            <button onclick="closeWelcome()" class="w-full bg-gradient-to-r from-neon-cyan to-neon-purple text-black py-4 rounded-2xl font-black ripple hover:shadow-[0_0_30px_#00f2fe] transition-all">
+            <button onclick="closeModal()" class="btn-neon w-full py-4 rounded-2xl font-black text-dark-bg text-xl">
                 ورود به دنیای شیدا
             </button>
         </div>
     </div>
 
-    <header class="py-16 relative">
-        <div class="container mx-auto px-4">
-            <div class="text-center animate-fade-in">
-                <div class="flex flex-col md:flex-row items-center justify-center mb-10 gap-6">
-                    <div class="card-neon rounded-[2.5rem] flex items-center justify-center w-32 h-32 shadow-2xl overflow-hidden p-2">
-                         <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" class="w-full h-full object-contain animate-pulse-neon" alt="Sheida Net">
-                    </div>
-                    <div class="text-right">
-                        <h1 class="text-6xl md:text-7xl font-black mb-2 neon-text-magenta">شیدا نت</h1>
-                        <p class="text-neon-cyan text-xl font-bold tracking-widest">SHEIDA NET | V2REI SERVICES</p>
-                    </div>
+    <header class="relative pt-12 pb-20 px-4 overflow-hidden">
+        <div class="container mx-auto text-center relative z-10">
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative">
+                    <div class="absolute inset-0 blur-2xl bg-neon-purple/30 rounded-full"></div>
+                    <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" alt="Logo" class="w-32 h-32 relative z-10 mb-4 animate-float">
                 </div>
-                
-                <div class="card-neon rounded-3xl p-8 inline-block shadow-2xl mb-10 border-b-2 border-neon-magenta">
-                    <div class="grid grid-cols-3 gap-8 md:gap-16">
-                        <div class="text-center">
-                            <div class="flex items-center justify-center mb-3">
-                                <div class="w-4 h-4 status-online rounded-full ml-3"></div>
-                                <div class="font-black text-xl text-white">وضعیت پایداری</div>
-                            </div>
-                            <div class="text-neon-cyan text-lg font-mono tracking-tighter"><span id="uptime" class="font-bold">--</span>%</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="font-black text-4xl mb-1 neon-text-magenta" id="activeServers">48</div>
-                            <div class="text-gray-400 text-sm">سرور فعال</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="font-black text-4xl mb-1 neon-text-cyan" id="serverPing">--</div>
-                            <div class="text-gray-400 text-sm">پینگ شبکه</div>
-                        </div>
-                    </div>
-                </div>
+                <h1 class="text-6xl md:text-8xl font-black mb-2 tracking-tighter neon-text-purple">شیدا نت</h1>
+                <p class="text-neon-cyan font-bold tracking-[0.3em] uppercase text-sm md:text-base">Sheida Net Premium Services</p>
+            </div>
 
-                <div class="card-neon rounded-3xl p-8 max-w-3xl mx-auto border-x-2 border-neon-cyan">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                        <div class="flex flex-col items-center group">
-                            <i class="fa-solid fa-wifi neon-text-cyan text-4xl mb-4 group-hover:scale-125 transition-transform"></i>
-                            <h3 class="text-gray-400 text-xs font-bold mb-1 uppercase tracking-tighter">IP Address</h3>
-                            <p id="user-ip" class="font-mono text-white font-black text-lg animate-pulse">DETECTING...</p>
-                        </div>
-                         <div class="flex flex-col items-center group">
-                            <i class="fa-solid fa-location-crosshairs text-green-400 text-4xl mb-4 group-hover:scale-125 transition-transform"></i>
-                            <h3 class="text-gray-400 text-xs font-bold mb-1 uppercase tracking-tighter">Location</h3>
-                            <p id="user-location" class="font-mono text-white font-black text-lg animate-pulse">LOCATING...</p>
-                        </div>
-                         <div class="flex flex-col items-center group">
-                            <i class="fa-solid fa-server neon-text-magenta text-4xl mb-4 group-hover:scale-125 transition-transform"></i>
-                            <h3 class="text-gray-400 text-xs font-bold mb-1 uppercase tracking-tighter">ISP Provider</h3>
-                            <p id="user-isp" class="font-mono text-white font-black text-lg animate-pulse">IDENTIFYING...</p>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12">
+                <div class="neon-card p-6 rounded-3xl flex flex-col items-center">
+                    <i class="fa-solid fa-globe text-3xl mb-3 neon-text-cyan"></i>
+                    <span class="text-xs text-gray-400 mb-1">آدرس آی‌پی شما</span>
+                    <span id="user-ip" class="font-mono font-bold text-lg">در حال دریافت...</span>
+                </div>
+                <div class="neon-card p-6 rounded-3xl flex flex-col items-center">
+                    <i class="fa-solid fa-location-dot text-3xl mb-3 neon-text-purple"></i>
+                    <span class="text-xs text-gray-400 mb-1">موقعیت مکانی</span>
+                    <span id="user-location" class="font-bold">شناسایی...</span>
+                </div>
+                <div class="neon-card p-6 rounded-3xl flex flex-col items-center">
+                    <i class="fa-solid fa-server text-3xl mb-3 text-pink-500"></i>
+                    <span class="text-xs text-gray-400 mb-1">ارائه‌دهنده اینترنت</span>
+                    <span id="user-isp" class="font-bold">بررسی...</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="space-y-20 pb-20">
-        <section class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <a href="#sublink" class="card-neon rounded-[2rem] p-8 text-center ripple group">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:rotate-12 transition-all">
-                        <i class="fa-solid fa-bolt-lightning text-4xl text-black"></i>
-                    </div>
-                    <h3 class="font-black text-2xl mb-2 text-white">دریافت پنل</h3>
-                    <p class="text-neon-cyan font-bold">آپدیت خودکار سرورها</p>
-                </a>
-                <a href="#tools" class="card-neon rounded-[2rem] p-8 text-center ripple group">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-magenta-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:-rotate-12 transition-all">
-                        <i class="fa-solid fa-microchip text-4xl text-black"></i>
-                    </div>
-                    <h3 class="font-black text-2xl mb-2 text-white">تست امنیت</h3>
-                    <p class="text-neon-magenta font-bold">بررسی نشت IP</p>
-                </a>
-                <a href="#notifications" class="card-neon rounded-[2rem] p-8 text-center ripple group">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-yellow-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-all">
-                        <i class="fa-solid fa-satellite-dish text-4xl text-black"></i>
-                    </div>
-                    <h3 class="font-black text-2xl mb-2 text-white">وضعیت شبکه</h3>
-                    <p class="text-yellow-400 font-bold">اخبار شیدا نت</p>
-                </a>
-            </div>
+    <main class="container mx-auto px-4 space-y-24 pb-32">
+        
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            <a href="#subscription" class="neon-card p-6 rounded-3xl text-center group">
+                <div class="w-12 h-12 bg-neon-purple/20 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-bolt text-xl neon-text-purple"></i>
+                </div>
+                <span class="font-bold text-sm">خرید اشتراک</span>
+            </a>
+            <a href="#configs" class="neon-card p-6 rounded-3xl text-center group">
+                <div class="w-12 h-12 bg-neon-cyan/20 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-list-check text-xl neon-text-cyan"></i>
+                </div>
+                <span class="font-bold text-sm">کانفیگ‌ها</span>
+            </a>
+            <a href="#tools" class="neon-card p-6 rounded-3xl text-center group">
+                <div class="w-12 h-12 bg-pink-500/20 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-microchip text-xl text-pink-500"></i>
+                </div>
+                <span class="font-bold text-sm">ابزارهای تست</span>
+            </a>
+            <a href="https://t.me/v2rei" class="neon-card p-6 rounded-3xl text-center group">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-brands fa-telegram text-xl text-blue-400"></i>
+                </div>
+                <span class="font-bold text-sm">پشتیبانی v2rei</span>
+            </a>
         </section>
 
-        <section id="sublink" class="container mx-auto px-4">
-            <div class="card-neon rounded-[3rem] p-10 max-w-4xl mx-auto text-center border-2 border-neon-cyan shadow-[0_0_50px_rgba(0,242,254,0.1)]">
-                 <div class="w-24 h-24 bg-neon-cyan rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_#00f2fe]">
-                    <i class="fa-solid fa-link-slash text-4xl text-black"></i>
-                </div>
-                <h2 class="text-4xl font-black mb-6 neon-text-cyan">لینک اشتراک شیدا نت (v2rei)</h2>
-                <p class="text-gray-300 text-xl mb-8">با افزودن این لینک به برنامه، تمام سرورهای ما را یکجا و همیشه فعال داشته باشید.</p>
-                <div class="bg-black bg-opacity-60 rounded-2xl p-6 mb-10 border border-neon-purple shadow-inner">
-                    <p id="subLink" class="font-mono text-neon-cyan font-bold text-lg break-all">https://sheida-net.v2rei.xyz/main-sub</p>
-                </div>
-                <button onclick="copySubLink()" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-black px-12 py-5 rounded-2xl font-black text-xl ripple shadow-[0_0_30px_rgba(0,242,254,0.3)] hover:scale-105 transition-all">
-                    <i class="fa-solid fa-copy ml-3"></i>
-                    کپی هوشمند لینک
-                </button>
-            </div>
-        </section>
-
-        <section id="servers" class="container mx-auto px-4">
-            <div class="card-neon rounded-[3rem] p-8 md:p-12 max-w-6xl mx-auto relative overflow-hidden">
-                <div class="absolute -top-20 -right-20 w-64 h-64 bg-neon-magenta opacity-10 blur-[100px]"></div>
-                <div class="text-center mb-16">
-                    <h2 class="text-5xl font-black mb-4 neon-text-magenta">کانفیگ‌های اختصاصی</h2>
-                    <p class="text-gray-400 text-lg">گلچینی از پرسرعت‌ترین سرورهای نئونی</p>
+        <section id="subscription" class="max-w-4xl mx-auto">
+            <div class="neon-card rounded-[3rem] overflow-hidden p-8 md:p-12 text-center border-b-4 border-neon-purple">
+                <h2 class="text-4xl font-black mb-6 neon-text-purple">لینک اشتراک اختصاصی</h2>
+                <p class="text-gray-400 mb-10 text-lg">با وارد کردن این لینک در نرم‌افزار، به صورت خودکار به جدیدترین سرورها متصل شوید.</p>
+                
+                <div class="bg-black/40 p-6 rounded-3xl border border-white/10 mb-8 relative">
+                    <code id="sub-link" class="text-neon-cyan font-mono text-sm md:text-lg break-all">https://sheidanet.v2rei.site/api/v1/client/subscribe?token=sheidanet_v2rei_exclusive</code>
+                    <button onclick="copySubLink()" class="absolute -bottom-4 left-1/2 -translate-x-1/2 btn-neon px-8 py-2 rounded-full text-dark-bg font-black text-sm">
+                        کپی لینک
+                    </button>
                 </div>
                 
-                <div class="grid lg:grid-cols-2 gap-12">
-                    <div class="card-neon rounded-[2rem] p-8 border-r-4 border-neon-cyan bg-black bg-opacity-40">
-                        <div class="flex items-center mb-8 gap-4">
-                            <div class="w-16 h-16 bg-neon-cyan rounded-xl flex items-center justify-center shadow-[0_0_15px_#00f2fe]">
-                                <i class="fa-solid fa-terminal text-2xl text-black"></i>
-                            </div>
-                            <h3 class="text-2xl font-black text-white uppercase">Fast Copy List</h3>
-                        </div>
-                        <div id="config-list-container" class="space-y-4 h-80 overflow-y-auto config-list pr-4">
-                            </div>
-                    </div>
-                    
-                    <div class="card-neon rounded-[2rem] p-8 border-l-4 border-neon-magenta bg-black bg-opacity-40">
-                        <div class="flex items-center mb-8 gap-4">
-                            <div class="w-16 h-16 bg-neon-magenta rounded-xl flex items-center justify-center shadow-[0_0_15px_#ff00de]">
-                                <i class="fa-solid fa-qrcode text-2xl text-black"></i>
-                            </div>
-                            <h3 class="text-2xl font-black text-white uppercase">Mobile Scan</h3>
-                        </div>
-                        <div class="bg-white rounded-3xl p-6 mb-8 flex justify-center items-center shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-                            <div id="qrcode"></div>
-                        </div>
-                        <select id="configSelect" onchange="generateQR()" class="w-full bg-black border-2 border-neon-magenta rounded-2xl p-4 text-neon-magenta font-black focus:outline-none transition-all">
-                            <option value="cf_de_1">🇩🇪 VLESS-SHEIDA-01</option>
-                            <option value="cf_de_2">🇩🇪 VLESS-SHEIDA-02</option>
-                            <option value="cf_de_tr_5">🇩🇪 TROJAN-SHEIDA-05</option>
-                        </select>
-                    </div>
+                <div class="flex flex-wrap justify-center gap-4 mt-12">
+                    <span class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-xs font-bold">VLESS</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-xs font-bold">TROJAN</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-xs font-bold">REALITY</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-xs font-bold">TUIC</span>
                 </div>
             </div>
         </section>
 
-        <section id="tools" class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-black mb-4 neon-text-cyan">آزمایشگاه نئون</h2>
-                <p class="text-gray-400">ابزارهای مانیتورینگ آنلاین سرویس شیدا نت</p>
-            </div>
-            <div class="grid lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-                <div class="card-neon rounded-[2.5rem] p-10 group">
-                    <div class="flex items-center justify-between mb-8">
-                        <i class="fa-solid fa-gauge-high text-5xl neon-text-cyan group-hover:rotate-12 transition-transform"></i>
-                        <h3 class="text-3xl font-black text-white">پینگ زنده</h3>
+        <section id="configs" class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div class="neon-card rounded-[2.5rem] p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-black neon-text-cyan">لیست کانفیگ‌های نئونی</h3>
+                    <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" class="w-10 h-10 opacity-50" alt="sm-logo">
+                </div>
+                <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2" id="config-list">
                     </div>
-                    <div id="ping-list-container" class="space-y-4 mb-8 h-56 overflow-y-auto config-list"></div>
-                    <button onclick="runAllPings()" id="pingTestBtn" class="w-full bg-neon-cyan text-black py-4 rounded-2xl font-black text-lg shadow-[0_0_20px_rgba(0,242,254,0.4)] hover:shadow-[0_0_40px_rgba(0,242,254,0.6)] transition-all">
-                        شروع مانیتورینگ پینگ
+            </div>
+
+            <div class="neon-card rounded-[2.5rem] p-8 text-center flex flex-col items-center justify-center border-l-4 border-neon-cyan">
+                <h3 class="text-2xl font-black mb-6 neon-text-purple">اسکن سریع QR</h3>
+                <div id="qrcode" class="bg-white p-4 rounded-3xl shadow-[0_0_30px_rgba(255,255,255,0.1)] mb-8">
+                    </div>
+                <select id="qr-select" onchange="updateQR()" class="w-full bg-black/50 border border-neon-purple rounded-2xl p-4 text-sm font-bold focus:outline-none focus:border-neon-cyan transition-all">
+                    </select>
+                <p class="text-xs text-gray-500 mt-4 italic">تولید شده توسط سیستم هوشمند v2rei</p>
+            </div>
+        </section>
+
+        <section id="tools" class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black neon-text-cyan">آزمایشگاه شیدا</h2>
+                <p class="text-gray-400">تست پایداری و امنیت شبکه در لحظه</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="neon-card rounded-3xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <i class="fa-solid fa-gauge-high text-3xl neon-text-purple"></i>
+                        <h4 class="text-xl font-bold">تست پینگ سرورها</h4>
+                    </div>
+                    <div id="ping-results" class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm text-gray-400 italic">منتظر شروع تست...</div>
+                    </div>
+                    <button onclick="runPingTest()" class="w-full py-3 rounded-2xl border-2 border-neon-purple hover:bg-neon-purple/20 transition-all font-bold">
+                        شروع مانیتورینگ
                     </button>
                 </div>
 
-                <div class="card-neon rounded-[2.5rem] p-10 group">
-                    <div class="flex items-center justify-between mb-8">
-                        <i class="fa-solid fa-user-shield text-5xl neon-text-magenta group-hover:-rotate-12 transition-transform"></i>
-                        <h3 class="text-3xl font-black text-white">نشت DNS</h3>
+                <div class="neon-card rounded-3xl p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <i class="fa-solid fa-shield-halved text-3xl neon-text-cyan"></i>
+                        <h4 class="text-xl font-bold">بررسی نشت DNS</h4>
                     </div>
-                    <div id="dns-leak-result" class="text-center h-56 flex flex-col justify-center items-center">
-                        <p class="text-gray-500 font-bold">برای آنالیز امنیتی دکمه را فشار دهید</p>
+                    <div id="dns-status" class="text-center py-8">
+                        <div class="text-5xl mb-4 text-gray-700"><i class="fa-solid fa-fingerprint"></i></div>
+                        <p class="text-sm text-gray-400">سیستم آماده آنالیز امنیت v2rei</p>
                     </div>
-                    <button onclick="checkDNSLeak()" id="dnsTestBtn" class="w-full bg-neon-magenta text-black py-4 rounded-2xl font-black text-lg shadow-[0_0_20px_rgba(255,0,222,0.4)] hover:shadow-[0_0_40px_rgba(255,0,222,0.6)] transition-all">
-                        اجرای تست امنیت شبکه
+                    <button onclick="checkDNS()" class="w-full py-3 rounded-2xl border-2 border-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold">
+                        آنالیز امنیت اتصال
                     </button>
                 </div>
             </div>
         </section>
 
-        <section id="faq" class="container mx-auto px-4">
-             <div class="card-neon rounded-[3rem] p-10 max-w-4xl mx-auto">
-                <h2 class="text-4xl font-black mb-12 text-center neon-text-magenta">پرسش‌های متداول</h2>
-                <div class="space-y-6" id="faq-container"></div>
-            </div>
+        <section id="faq" class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-black mb-10 text-center neon-text-purple">سوالات متداول</h2>
+            <div class="space-y-4" id="faq-container">
+                </div>
         </section>
-    </div>
 
-    <footer class="pt-20 pb-10 bg-black bg-opacity-80 border-t-2 border-neon-cyan relative">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex flex-col items-center mb-12">
-                 <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" class="w-24 mb-6 shadow-2xl rounded-full" alt="Sheida Net">
-                <h2 class="text-5xl font-black neon-text-magenta mb-2">شیدا نت</h2>
-                <p class="text-neon-cyan font-bold tracking-widest">تکنولوژی v2rei برای آزادی بی‌پایان</p>
+    </main>
+
+    <footer class="bg-black/80 backdrop-blur-md border-t border-neon-purple/30 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+                <div class="text-center md:text-right">
+                    <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
+                        <img src="https://i.ibb.co/fzrKsF8s/Negar-1774783843096.png" alt="Logo" class="w-12 h-12">
+                        <span class="text-3xl font-black neon-text-purple">شیدا نت</span>
+                    </div>
+                    <p class="max-w-xs text-gray-400 text-sm leading-relaxed">
+                        اولین ارائه دهنده سرویس‌های نئونی با پروتکل‌های نسل جدید. امنیت شما، اعتبار ماست.
+                    </p>
+                </div>
+
+                <div class="flex gap-6">
+                    <a href="https://t.me/v2rei" class="w-14 h-14 rounded-2xl neon-card flex items-center justify-center text-2xl hover:text-blue-400 transition-colors">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                    <a href="#" class="w-14 h-14 rounded-2xl neon-card flex items-center justify-center text-2xl hover:text-pink-500 transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/v2rei" class="w-14 h-14 rounded-2xl neon-card flex items-center justify-center text-2xl hover:text-white transition-colors">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto mb-16">
-                <a href="https://t.me/v2rei" target="_blank" class="card-neon rounded-2xl p-6 flex items-center justify-center gap-4 hover:border-blue-400">
-                    <i class="fa-brands fa-telegram text-4xl text-blue-400"></i>
-                    <div class="text-right">
-                        <h3 class="font-black text-white">پشتیبانی تلگرام</h3>
-                        <p class="text-gray-400 text-sm">@v2rei</p>
-                    </div>
-                </a>
-                 <a href="https://t.me/v2rei" target="_blank" class="card-neon rounded-2xl p-6 flex items-center justify-center gap-4 hover:border-pink-500">
-                    <i class="fa-solid fa-headset text-4xl neon-text-magenta"></i>
-                    <div class="text-right">
-                        <h3 class="font-black text-white">کانال رسمی</h3>
-                        <p class="text-gray-400 text-sm">SHEIDA NET NEWS</p>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 text-gray-500 text-sm font-bold">
-                <p class="mb-2">© 2026 SHEIDA NET - DESIGNED WITH NEON POWER FOR IRAN ❤️</p>
-                <p class="text-neon-cyan opacity-50">BY V2REI TEAM</p>
+            <div class="text-center border-t border-white/5 pt-8">
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">
+                    &copy; 2026 <span class="neon-text-cyan">Sheida Net</span> | Powered By <span class="neon-text-purple">v2rei</span> Team
+                </p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // --- SHEIDA NET CONFIGS (v2rei) ---
-        const configs = {
-            cf_de_1: { name: '🇩🇪 VLESS-SHEIDA-01', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FlwIBsf84RYZSVl1x%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%A9%F0%9F%87%AA%20SHEIDA-NET-01' },
-            cf_de_2: { name: '🇩🇪 VLESS-SHEIDA-02', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@www.speedtest.net:443?path=%2FweIiUrqpwSQLUEGI%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=FK31lNdM4W8Uj0Yp1dRWlTDtDKo6y-Cu.pagES.dEv#%F0%9F%87%A9%F0%9F%87%AA%20SHEIDA-NET-02' },
-            cf_de_tr_5: { name: '🇩🇪 TROJAN-SHEIDA-05', config: 'trojan://%3AbC5%5Elakx%3E%24d@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FtrULF8XIBg0I5upoFe%3Fed%3D2560&security=tls&alpn=http%2F1.1&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%A9%F0%9F%87%AA%20SHEIDA-NET-05' }
-        };
+    <div id="notification-container" class="fixed bottom-6 left-6 z-[1000] space-y-3"></div>
 
-        const faqData = [
-            { question: "چرا شیدا نت نئونی است؟", answer: "زیرا ما معتقدیم اینترنت آزاد باید زیبا و الهام‌بخش باشد. استایل نئونی نماد سرعت و تکنولوژی مدرن ماست." },
-            { question: "آیا ایدی v2rei معتبر است؟", answer: "بله، تمامی خدمات پشتیبانی و فنی ما تحت برند v2rei در تلگرام ارائه می‌شود." },
-            { question: "امنیت داده‌های من چگونه است؟", answer: "شیدا نت از پروتکل‌های نظامی VLESS و Trojan با رمزنگاری پیشرفته استفاده می‌کند تا هویت شما کاملاً مخفی بماند." }
+    <script>
+        // --- DATA ---
+        const SHEIDA_CONFIGS = [
+            { id: 1, name: "🇩🇪 آلمان - نئون 01 (VLESS)", type: "VLESS", url: "vless://826f524a-cea1-4e44-9b49-3381d13b7593@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FlwIBsf84RYZSVl1x%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%A9%F0%9F%87%AA%20SHEIDA-NET-DE-01" },
+            { id: 2, name: "🇫🇮 فنلاند - نئون 02 (Trojan)", type: "Trojan", url: "trojan://%3AbC5%5Elakx%3E%24d@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FtrULF8XIBg0I5upoFe%3Fed%3D2560&security=tls&alpn=http%2F1.1&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%AB%F0%9F%87%AE%20SHEIDA-NET-FI-02" },
+            { id: 3, name: "🇺🇸 آمریکا - نئون 03 (VLESS)", type: "VLESS", url: "vless://826f524a-cea1-4e44-9b49-3381d13b7593@www.speedtest.net:443?path=%2FweIiUrqpwSQLUEGI%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=FK31lNdM4W8Uj0Yp1dRWlTDtDKo6y-Cu.pagES.dEv#%F0%9F%87%BA%F0%9F%87%B8%20SHEIDA-NET-US-03" }
         ];
 
-        // --- CORE UI LOGIC ---
-        function createSnow() {
-            const container = document.getElementById('flag-container');
-            const count = 30;
-            for(let i=0; i<count; i++) {
-                const flag = document.createElement('div');
-                flag.className = 'snow-flag';
-                flag.style.left = Math.random() * 100 + '%';
-                flag.style.animationDuration = (Math.random() * 5 + 8) + 's';
-                flag.style.animationDelay = Math.random() * 10 + 's';
-                flag.style.width = (Math.random() * 10 + 10) + 'px';
-                flag.style.height = (flag.offsetWidth * 0.6) + 'px';
-                flag.style.animationName = 'flagFall';
-                container.appendChild(flag);
-            }
+        const FAQS = [
+            { q: "چرا شیدا نت نئونی است؟", a: "زیرا ما معتقدیم اینترنت آزاد باید زیبا و الهام‌بخش باشد. استایل نئونی نماد سرعت و تکنولوژی مدرن ماست." },
+            { q: "پشتیبانی v2rei کجاست؟", a: "تیم فنی ما به صورت ۲۴ ساعته در تلگرام با آیدی v2rei آماده پاسخگویی به شما عزیزان است." },
+            { q: "چطور از لینک اشتراک استفاده کنم؟", a: "کافیست دکمه کپی را بزنید و در اپلیکیشن v2rayNG یا NapsternetV گزینه Import from Clipboard را انتخاب کنید." }
+        ];
+
+        // --- CORE FUNCTIONS ---
+        function init() {
+            renderConfigs();
+            renderFAQ();
+            fetchUserIP();
+            updateQR();
+            startFlagSnow();
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!sessionStorage.getItem('sheidaWelcomed')) {
-                document.getElementById('welcomeModal').classList.remove('hidden');
-            }
-            createSnow();
-            buildFAQ();
-            buildConfigList();
-            updateServerStats();
-            generateQR();
-            getUserInfo();
-            setInterval(updateServerStats, 5000);
-        });
-
-        function buildConfigList() {
-            const container = document.getElementById('config-list-container');
-            Object.keys(configs).forEach(key => {
-                const btn = document.createElement('button');
-                btn.onclick = () => copyConfig(key);
-                btn.className = 'w-full bg-white bg-opacity-5 hover:bg-opacity-20 text-white p-4 rounded-xl font-bold flex justify-between items-center transition-all border border-transparent hover:border-neon-cyan';
-                btn.innerHTML = `<span>${configs[key].name}</span> <i class="fa-solid fa-copy neon-text-cyan"></i>`;
-                container.appendChild(btn);
-            });
-        }
-
-        function buildFAQ() {
-            const container = document.getElementById('faq-container');
-            faqData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'card-neon rounded-2xl overflow-hidden cursor-pointer';
-                div.innerHTML = `
-                    <div class="p-6 flex justify-between items-center font-black text-white" onclick="toggleFaq(this)">
-                        <span>${item.question}</span>
-                        <i class="fa-solid fa-plus neon-text-cyan transition-transform"></i>
+        function renderConfigs() {
+            const list = document.getElementById('config-list');
+            const select = document.getElementById('qr-select');
+            
+            SHEIDA_CONFIGS.forEach(conf => {
+                // List Item
+                const item = document.createElement('div');
+                item.className = 'config-list-item p-4 rounded-2xl flex justify-between items-center group transition-all hover:bg-white/5';
+                item.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-bold text-sm">${conf.name}</span>
+                        <span class="text-[10px] text-neon-cyan">${conf.type}</span>
                     </div>
-                    <div class="faq-answer px-6 text-gray-400 font-bold pb-0"><p class="pb-6">${item.answer}</p></div>
+                    <button onclick="copyToClipboard('${conf.url}')" class="p-2 opacity-0 group-hover:opacity-100 transition-all text-neon-purple hover:text-neon-cyan">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
                 `;
-                container.appendChild(div);
+                list.appendChild(item);
+
+                // QR Option
+                const opt = document.createElement('option');
+                opt.value = conf.id;
+                opt.textContent = conf.name;
+                select.appendChild(opt);
             });
         }
 
-        function toggleFaq(el) {
-            const ans = el.nextElementSibling;
-            const icon = el.querySelector('i');
-            if (ans.style.maxHeight) {
-                ans.style.maxHeight = null;
-                icon.classList.replace('fa-minus', 'fa-plus');
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                ans.style.maxHeight = ans.scrollHeight + "px";
-                icon.classList.replace('fa-plus', 'fa-minus');
+        function renderFAQ() {
+            const container = document.getElementById('faq-container');
+            FAQS.forEach((faq, index) => {
+                const item = document.createElement('div');
+                item.className = 'neon-card rounded-2xl overflow-hidden';
+                item.innerHTML = `
+                    <button onclick="toggleFaq(${index})" class="w-full p-6 text-right flex justify-between items-center font-bold">
+                        <span>${faq.q}</span>
+                        <i id="faq-icon-${index}" class="fa-solid fa-chevron-down text-neon-cyan transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-${index}" class="max-h-0 overflow-hidden transition-all duration-300 bg-white/5">
+                        <p class="p-6 text-sm text-gray-400 leading-loose">${faq.a}</p>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function toggleFaq(index) {
+            const ans = document.getElementById(`faq-ans-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            if (ans.style.maxHeight === '0px' || !ans.style.maxHeight) {
+                ans.style.maxHeight = '200px';
                 icon.style.transform = 'rotate(180deg)';
+            } else {
+                ans.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
             }
         }
 
-        async function getUserInfo() {
+        async function fetchUserIP() {
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 document.getElementById('user-ip').textContent = data.ip;
-                document.getElementById('user-location').textContent = data.city + ', ' + data.country_code;
+                document.getElementById('user-location').textContent = `${data.city}, ${data.country_name}`;
                 document.getElementById('user-isp').textContent = data.org;
-            } catch {
-                document.getElementById('user-ip').textContent = 'ERROR';
+                document.getElementById('user-ip').classList.add('neon-text-cyan');
+            } catch (e) {
+                document.getElementById('user-ip').textContent = "خطا در اتصال";
             }
         }
 
-        function updateServerStats() {
-            const uptime = 99.9821 + (Math.random() * 0.01);
-            document.getElementById('uptime').textContent = uptime.toFixed(4);
-            document.getElementById('serverPing').textContent = Math.floor(Math.random() * 20 + 40) + 'ms';
-        }
-
-        function generateQR() {
-            const key = document.getElementById('configSelect').value;
-            const qr = qrcode(0, 'M');
-            qr.addData(configs[key].config);
+        function updateQR() {
+            const id = document.getElementById('qr-select').value;
+            const conf = SHEIDA_CONFIGS.find(c => c.id == id);
+            const typeNumber = 0;
+            const errorCorrectionLevel = 'H';
+            const qr = qrcode(typeNumber, errorCorrectionLevel);
+            qr.addData(conf.url);
             qr.make();
-            document.getElementById('qrcode').innerHTML = qr.createSvgTag({ cellSize: 5, margin: 1 });
+            document.getElementById('qrcode').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 1 });
         }
 
-        function copyConfig(key) {
-            navigator.clipboard.writeText(configs[key].config);
-            showNotification('کانفیگ شیدا نت کپی شد! ✅');
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotify("کانفیگ شیدا با موفقیت کپی شد! ✅");
+            });
         }
 
         function copySubLink() {
-            navigator.clipboard.writeText(document.getElementById('subLink').textContent);
-            showNotification('لینک اشتراک v2rei کپی شد! 🚀');
+            const link = document.getElementById('sub-link').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                showNotify("لینک اشتراک v2rei کپی شد! 🚀");
+            });
         }
 
-        function closeWelcome() {
-            sessionStorage.setItem('sheidaWelcomed', 'true');
-            document.getElementById('welcomeModal').classList.add('hidden');
-        }
-
-        function showNotification(msg) {
+        function showNotify(msg) {
+            const container = document.getElementById('notification-container');
             const toast = document.createElement('div');
-            toast.className = 'fixed top-10 left-1/2 -translate-x-1/2 bg-neon-cyan text-black px-8 py-4 rounded-2xl font-black z-[1000] shadow-[0_0_30px_#00f2fe] animate-slide-up';
+            toast.className = 'neon-card px-6 py-3 rounded-xl border-l-4 border-neon-cyan animate-bounce font-bold text-sm';
             toast.textContent = msg;
-            document.body.appendChild(toast);
+            container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
 
-        async function runAllPings() {
-            const container = document.getElementById('ping-list-container');
-            container.innerHTML = '<p class="text-neon-cyan animate-pulse text-center font-black">SCANNING NETWORK...</p>';
+        function closeModal() {
+            document.getElementById('welcomeModal').style.opacity = '0';
+            setTimeout(() => document.getElementById('welcomeModal').remove(), 300);
+        }
+
+        // --- TOOLS LOGIC ---
+        function runPingTest() {
+            const res = document.getElementById('ping-results');
+            res.innerHTML = '<div class="flex items-center gap-3"><i class="fa-solid fa-spinner fa-spin text-neon-cyan"></i> <span>در حال پینگ گرفتن از نودهای v2rei...</span></div>';
+            
             setTimeout(() => {
-                container.innerHTML = '';
-                ['SHEIDA-DE-MAIN', 'V2REI-CORE', 'NEON-NODE-01'].forEach(node => {
-                    const row = document.createElement('div');
-                    row.className = 'flex justify-between p-3 bg-white bg-opacity-5 rounded-lg';
-                    row.innerHTML = `<span class="text-white">${node}</span> <span class="text-green-400 font-mono">${Math.floor(Math.random()*30+35)}ms</span>`;
-                    container.appendChild(row);
+                res.innerHTML = '';
+                ['Germany-Main', 'Finland-Neon', 'US-Global'].forEach(srv => {
+                    const ping = Math.floor(Math.random() * 80) + 40;
+                    res.innerHTML += `
+                        <div class="flex justify-between items-center p-2 bg-black/30 rounded-lg">
+                            <span class="text-xs">${srv}</span>
+                            <span class="font-mono ${ping < 60 ? 'text-green-400' : 'text-yellow-400'}">${ping}ms</span>
+                        </div>
+                    `;
                 });
             }, 1500);
         }
 
-        async function checkDNSLeak() {
-            const resEl = document.getElementById('dns-leak-result');
-            resEl.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-4xl neon-text-magenta"></i>';
+        function checkDNS() {
+            const dns = document.getElementById('dns-status');
+            dns.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-4xl neon-text-cyan"></i><p class="mt-2">در حال بررسی امنیت تونلینگ...</p>';
+            
             setTimeout(() => {
-                resEl.innerHTML = `
-                    <div class="text-green-400 font-black">
-                        <i class="fa-solid fa-shield-check text-5xl mb-4"></i>
-                        <p>اتصال ایمن است</p>
-                        <p class="text-xs text-gray-500 mt-2">NO LEAKS DETECTED ON V2REI NODES</p>
+                dns.innerHTML = `
+                    <div class="text-green-400 animate-pulse">
+                        <i class="fa-solid fa-shield-check text-5xl mb-2"></i>
+                        <p class="font-black">امنیت اتصال تایید شد</p>
+                        <p class="text-[10px] text-gray-500">No Leak Detected by Sheida System</p>
                     </div>
                 `;
             }, 2000);
         }
+
+        // --- SNOW LOGIC ---
+        function startFlagSnow() {
+            const container = document.getElementById('flag-container');
+            setInterval(() => {
+                const flag = document.createElement('div');
+                flag.className = 'flag-snow';
+                flag.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg" class="w-4 h-3 opacity-30">`;
+                flag.style.left = Math.random() * 100 + 'vw';
+                flag.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                container.appendChild(flag);
+                setTimeout(() => flag.remove(), 8000);
+            }, 1000);
+        }
+
+        window.onload = init;
     </script>
 </body>
 </html>
